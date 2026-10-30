@@ -55,14 +55,14 @@ app.get("/posts", (req,res)=>
 );
 
 
-
+// Add new 
 app.get("/posts/new", (req, res) =>
 {
     res.render("new.ejs");
 }
 );
 
-
+// write new post
 app.post("/posts", (req,res)=>
 {
     let {username, content } = req.body;
@@ -76,7 +76,7 @@ app.post("/posts", (req,res)=>
 );
 
 
-
+// show posts
 app.get("/posts/:id", (req,res)=>
 {
    
@@ -106,17 +106,22 @@ app.patch("/posts/:id", (req,res)=>
 );
 
 // for edit message --> after edit will call patch
-app.get("/posts/:id/edit",(req, res) =>
 
-    {
-        let{id} = req.params;
+app.get("/posts/:id/edit", (req, res) => {
+    let { id } = req.params;
 
-   let post = posts.find(  (p) => id === p.id  );
+    // id → URL থেকে পাওয়া পোস্টের ID।
+    // p.id → Array-এর প্রতিটি পোস্টের ID।
 
-   res.render("edit.ejs", {post});
+    let post = posts.find( (p) => id === p.id );
 
+    if (!post) {
+        return res.status(404).send("Post not found");
     }
-)
+
+    res.render("edit.ejs", { post });
+});
+
 
 
 // delete message
